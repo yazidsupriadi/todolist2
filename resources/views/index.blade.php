@@ -16,24 +16,22 @@
 
         <tbody>
           <tr>
-            <td>Go to college</td>
+            @foreach($tasks as $task)
+            <td>
+              @if(!$task->status)
+              {{$task->content}}
+              @else
+              <strike class='red-text'>{{$task->content}} </strike>
+              @endif 
+            </td>
             @isAdmin
-            <td>Eclair</td>
+            <td>{{$task->user ? $task->user->name : '-'}}</td>
             @endisAdmin
-            <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
+            <td><a href="{{route('edit',$task->id)}}" title="edit"><i class="small material-icons">edit</i></a></td>
 
-            <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
+            <td><a onclick = "return confirm('Delete?');"href="{{route('delete',$task->id)}}" title="delete"><i class="small material-icons">delete</i></a></td>
           </tr>
-
-          <tr>
-            <td><strike> have a breakfast</strike></td>
-            @isAdmin
-            <td>none</td>
-            @endisAdmin
-            <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
-
-            <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
-          </tr>
+          @endforeach
         </tbody>
       </table>
 
@@ -48,14 +46,18 @@
   </ul>
   
 
-    <form class="col s12">
+    <form class="col s12" method="post" action="{{route('store')}}">
       <div class="row">
         <div class="input-field col s6">
           <input placeholder="task" id="task" type="text" class="validate">
           <label for="task">Tasks</label>
-                <a class="waves-effect waves-light btn">Add task</a>    
+                <button class="waves-effect waves-light btn" type="submit">Add task</button>    
+                @csrf
   
       </div>
+  
+                <button class="waves-effect waves-light btn" type="submit">Add task</button>    
+                @csrf
     
     
     </form>

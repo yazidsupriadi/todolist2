@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
+
 
 class ToDoController extends Controller
 {
@@ -14,7 +16,8 @@ class ToDoController extends Controller
     public function index()
     {
         //
-        return view('index');
+        $tasks = Task::all();
+        return view('index',compact('tasks'));
     }
 
     /**
@@ -36,6 +39,13 @@ class ToDoController extends Controller
     public function store(Request $request)
     {
         //
+        if ($request->input('task')) {
+                
+        $task = new Task;
+        $task->content = $request->input('task');
+        Auth::user()->task()->save($task);   
+        }
+        return redirect()->back();
     }
 
     /**
